@@ -1,3 +1,6 @@
+// Header file for graphics
+// dvan2, Oct 2016
+
 #ifndef __GRAPHICS__
 #define __GRAPHICS__
 
@@ -14,6 +17,7 @@
 using namespace std;
 
 #include "vector2d.h"
+#include "charge.h"
 
 #define SMALL_NUM 0.0000001
 #define SCALE 1.0 // (m)
@@ -40,5 +44,6 @@ void update_charge_state (void);
 void mouse_button (int button, int state, int x, int y);
 vector2d screen_to_space (double x, double y);
 void glut_key (unsigned char k, int x, int y);
+void initialise_charges (int scenario);
 
 #endif

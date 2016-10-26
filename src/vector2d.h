@@ -1,6 +1,12 @@
+// Class for two-dimensional vector operations
+// dvan2, Oct 2016
+
 #ifndef __VECTOR2D__
 #define __VECTOR2D__
-// Utility class for two-dimensional vector operations
+
+#include <iostream>
+#include <cmath>
+using namespace std;
 
 class vector2d {
   public:

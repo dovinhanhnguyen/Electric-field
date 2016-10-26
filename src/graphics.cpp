@@ -1,3 +1,6 @@
+// Implementation for graphics
+// dvan2, Oct 2016
+
 #include "graphics.h"
 
 void reshape (int width, int height)
@@ -21,7 +24,7 @@ void draw_window (void)
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  // TODO: put this in a class
+  // TO DO: put this in a class
   glPushMatrix();
   glColor3f(0.0, 1.0, 1.0);
   glPointSize(3.0);
@@ -36,7 +39,7 @@ void draw_window (void)
 void update_charge_state (void)
   // The GLUT idle function, called every time round the event loop
 {
-  // TODO: Mechanical dynamics
+  // TO DO: Update charge states
 
   // Refresh the visualization
   draw_window();
@@ -66,16 +69,24 @@ void glut_key (unsigned char k, int x, int y)
   
   case '1':
     // Monopole
+    initialise_charges(k-'0');
     break;
   
   case '2':
     // Dipole
+    initialise_charges(k-'0');
     break;
   
   case '3':
     // Quadrupole
+    initialise_charges(k-'0');
     break;
   }
+}
+
+void initialise_charges (int scenario)
+  // TO DO: Initialise charges at the beginning of a simulation
+{
 }
 
 int main (int argc, char* argv[])
@@ -94,6 +105,7 @@ int main (int argc, char* argv[])
   glutMouseFunc(mouse_button);
   glutKeyboardFunc(glut_key);
   
+  initialise_charges(0);
   glutMainLoop();
   
   return 0;
