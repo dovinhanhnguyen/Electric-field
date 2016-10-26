@@ -29,7 +29,7 @@ void draw (void)
   glColor3f(0.0, 1.0, 1.0);
   glPointSize(3.0);
   glBegin(GL_POINTS);
-  glVertex3d(position.x, position.y, position.z);
+  glVertex3d(position.x, position.y, 0.0);
   glEnd();
   glPopMatrix();
   
