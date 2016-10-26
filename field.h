@@ -79,8 +79,7 @@ struct track_t {
 #ifdef DECLARE_GLOBAL_VARIABLES // actual declarations of all global variables for field_graphics.cpp
 
 // GL windows and objects
-int main_window, closeup_window, orbital_window, instrument_window, view_width, view_height, win_width, win_height;
-GLUquadricObj *quadObj;
+int main_window;
 vector3d position;
 
 #else // extern declarations of those global variables used in lander.cpp

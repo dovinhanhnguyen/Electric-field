@@ -60,6 +60,18 @@ void glut_key (unsigned char k, int x, int y)
     // Escape or q or Q  - exit
     exit(0);
     break;
+  
+  case '1':
+    // Monopole
+    break;
+  
+  case '2':
+    // Dipole
+    break;
+  
+  case '3':
+    // Quadrupole
+    break;
   }
 }
 
@@ -78,7 +90,6 @@ int main (int argc, char* argv[])
   glutIdleFunc(update_charge_state);
   glutMouseFunc(mouse_button);
   glutKeyboardFunc(glut_key);
-  quadObj = gluNewQuadric();
   
   glutMainLoop();
   
