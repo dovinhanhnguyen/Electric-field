@@ -2,16 +2,16 @@ CC = g++
 CCSW = -O3 -Wno-deprecated-declarations
 PLATFORM = `uname`
 
-field: field_dynamics.o field_graphics.o
+field: charge.o graphics.o
 	@if [ ${PLATFORM} = "Linux" ]; \
-	then $(CC) -o field field_dynamics.o field_graphics.o ${CCSW} -lGL -lGLU -lglut; \
+	then $(CC) -o field charge.o graphics.o ${CCSW} -lGL -lGLU -lglut; \
 	echo Linking for Linux; \
 	elif [ ${PLATFORM} = "Darwin" ]; \
-	then $(CC) -o field field_dynamics.o field_graphics.o ${CCSW} -lSOIL -framework GLUT -framework OpenGL; \
+	then $(CC) -o field charge.o graphics.o ${CCSW} -lSOIL -framework GLUT -framework OpenGL; \
 	echo Linking for Mac OS X; \
 	fi
 
-field_dynamics.o field_graphics.o: field.h
+charge.o graphics.o: electric_field.h charge.h graphics.h vector2d.h
 
 .cpp.o:
 	$(CC) ${CCSW} -c $<

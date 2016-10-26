@@ -1,5 +1,4 @@
-#define DECLARE_GLOBAL_VARIABLES
-#include "field.h"
+#include "graphics.h"
 
 void reshape (int width, int height)
   // Reshape and set up matrices
@@ -22,7 +21,7 @@ void draw_window (void)
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  // put this in a class
+  // TODO: put this in a class
   glPushMatrix();
   glColor3f(0.0, 1.0, 1.0);
   glPointSize(3.0);
@@ -37,8 +36,7 @@ void draw_window (void)
 void update_charge_state (void)
   // The GLUT idle function, called every time round the event loop
 {
-  // Mechanical dynamics
-  update_dynamics();
+  // TODO: Mechanical dynamics
 
   // Refresh the visualization
   draw_window();
