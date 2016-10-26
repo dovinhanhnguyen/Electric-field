@@ -1,12 +1,39 @@
 #ifndef __GRAPHICS__
 #define __GRAPHICS__
 
-#include "electric_field.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <cmath>
+#include <cstdlib>
+using namespace std;
 
+#include "vector2d.h"
+
+#define SMALL_NUM 0.0000001
+#define SCALE 1.0 // (m)
+#define PREFERRED_WIDTH 1024
+#define PREFERRED_HEIGHT 768
+#define N_TRACK 1000
+
+// Data type for recording test-charge's previous positions
+struct track_t {
+  unsigned short n;
+  unsigned short p;
+  vector2d pos[N_TRACK];
+};
+
+// Graphics variables
 int main_window;
 double aspect_ratio, window_width, window_height;
 vector2d position;
 
+// Function prototypes
 void reshape_window (int width, int height);
 void draw_window (void);
 void update_charge_state (void);

@@ -11,7 +11,7 @@ field: charge.o graphics.o
 	echo Linking for Mac OS X; \
 	fi
 
-charge.o graphics.o: electric_field.h charge.h graphics.h vector2d.h
+charge.o graphics.o: charge.h graphics.h vector2d.h
 
 .cpp.o:
 	$(CC) ${CCSW} -c $<
