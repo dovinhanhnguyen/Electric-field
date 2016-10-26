@@ -13,9 +13,10 @@
 #include <cstdlib>
 using namespace std;
 
-#define MARS_RADIUS 3386000.0 // (m)
-#define PREFERRED_WIDTH 800
-#define PREFERRED_HEIGHT 600
+#define SMALL_NUM 0.0000001
+#define SCALE 1.0 // (m)
+#define PREFERRED_WIDTH 1024
+#define PREFERRED_HEIGHT 768
 #define N_TRACK 1000
 
 class vector2d {
@@ -53,11 +54,13 @@ struct track_t {
 
 // GL windows and objects
 int main_window;
+double aspect_ratio, window_width, window_height;
 vector2d position;
 
 #else // extern declarations of those global variables used in lander.cpp
 
 extern vector2d position;
+extern double aspect_ratio, window_width, window_height;
 
 #endif
 
@@ -65,10 +68,11 @@ extern vector2d position;
 void update_dynamics (void);
 
 // Graphics function prototypes
-void reshape (int width, int height);
-void draw (void);
+void reshape_window (int width, int height);
+void draw_window (void);
 void update_charge_state (void);
 void mouse_button (int button, int state, int x, int y);
+vector2d screen_to_space (double x, double y);
 void glut_key (unsigned char k, int x, int y);
 
 #endif

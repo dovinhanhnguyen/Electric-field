@@ -4,20 +4,18 @@
 void reshape (int width, int height)
   // Reshape and set up matrices
 {
-  width = glutGet(GLUT_WINDOW_WIDTH);
-  height = glutGet(GLUT_WINDOW_HEIGHT);
-  
-  double aspect_ratio;
-  aspect_ratio = (double)width/(double)height;
+  window_width = glutGet(GLUT_WINDOW_WIDTH);
+  window_height = glutGet(GLUT_WINDOW_HEIGHT);
+  aspect_ratio = window_width/window_height;
   
   glutSetWindow(main_window);
-  glViewport(0, 0, width, height);
+  glViewport(0, 0, window_width, window_height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glOrtho(-2.0*MARS_RADIUS*aspect_ratio, 2.0*MARS_RADIUS*aspect_ratio, -2.0*MARS_RADIUS, 2.0*MARS_RADIUS, -100.0*MARS_RADIUS, 100.0*MARS_RADIUS);
+  glOrtho(-SCALE*aspect_ratio, SCALE*aspect_ratio, -SCALE, SCALE, -1.0, 1.0);
 }
 
-void draw (void)
+void draw_window (void)
   // Draw main GLUT window
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -43,12 +41,19 @@ void update_charge_state (void)
   update_dynamics();
 
   // Refresh the visualization
-  draw();
+  draw_window();
 }
 
 void mouse_button (int button, int state, int x, int y)
   // Callback for mouse button presses in the orbital view window
 {
+  if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)) position = screen_to_space((double)x, (double)y);
+}
+
+vector2d screen_to_space (double x, double y)
+  // Convert position of mouse click in window to 2D coordinates in space
+{
+  return vector2d((x*2.0*SCALE*aspect_ratio/window_width-SCALE*aspect_ratio), (SCALE-y*2.0*SCALE/window_height));
 }
 
 void glut_key (unsigned char k, int x, int y)
@@ -85,7 +90,7 @@ int main (int argc, char* argv[])
   glutInitWindowSize(PREFERRED_WIDTH, PREFERRED_HEIGHT);
   main_window = glutCreateWindow("Electric field (Anh Nguyen, October 2016)");
   glDrawBuffer(GL_BACK);
-  glutDisplayFunc(draw);
+  glutDisplayFunc(draw_window);
   glutReshapeFunc(reshape);
   glutIdleFunc(update_charge_state);
   glutMouseFunc(mouse_button);
