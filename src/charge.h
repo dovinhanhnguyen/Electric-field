@@ -12,8 +12,8 @@
 #define MASS 9.11E-31 // (kg)
 #define MAX_NUM_SOURCE 4
 #define MAX_NUM_TEST 10
-#define DELTA_T 0.1 // (s)
-#define SCALE 200.0 // (m)
+#define DELTA_T 0.2 // (s)
+#define SCALE 100.0 // (m)
 
 class Charge {
   public:
@@ -36,7 +36,7 @@ class Charge {
     void acceleration (void);
     void update_charge (void);
     void reset_charge (vector2d initial_position);
-    void detect_collision (void);
+    void detect_collision (double aspect_ratio);
   private:
 };
 

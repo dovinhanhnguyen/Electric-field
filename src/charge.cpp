@@ -54,16 +54,18 @@ void Charge::reset_charge (vector2d initial_position) {
 }
 
 // Detect when two opposite charges mesh together
-void Charge::detect_collision (void) {
+void Charge::detect_collision (double aspect_ratio) {
   double temp;
-  for (int i=0; i<MAX_NUM_SOURCE; i++) {
-    if ((ptr_source_list+i)->draw_or_not == 1) {
-      temp = ((((ptr_source_list+i)->charge_position)-charge_position).abs());
-      if (temp <= SCALE/50) {
-        draw_or_not = 0;
-        break;
+  if (charge_position.x >= SCALE*aspect_ratio || charge_position.x <= -SCALE*aspect_ratio || charge_position.y >= SCALE || charge_position.y <= -SCALE) draw_or_not = 0;
+  else {
+    for (int i=0; i<MAX_NUM_SOURCE; i++) {
+      if ((ptr_source_list+i)->draw_or_not == 1) {
+        temp = ((((ptr_source_list+i)->charge_position)-charge_position).abs());
+        if (temp <= SCALE/50) {
+          draw_or_not = 0;
+          break;
+        }
       }
     }
   }
-  if (draw_or_not == 0) cout << "Collision? " << draw_or_not << endl;
 }

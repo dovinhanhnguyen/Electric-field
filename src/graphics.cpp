@@ -24,7 +24,7 @@ void draw_window (void)
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  // TO DO: put this in a class
+  // Draw charges
   glPushMatrix();
   glBegin(GL_POINTS);
   for (int i=0; i<MAX_NUM_SOURCE; i++) {
@@ -45,10 +45,10 @@ void draw_window (void)
 void update_charge_state (void)
   // The GLUT idle function, called every time round the event loop
 {
-  // TO DO: Update charge states
+  // Update charge states
   if (test_charge.draw_or_not == 1) {
     test_charge.update_charge();
-    test_charge.detect_collision();
+    test_charge.detect_collision(aspect_ratio);
   }
 
   // Refresh the visualization
@@ -59,8 +59,6 @@ void mouse_button (int button, int state, int x, int y)
   // Callback for mouse button presses in the orbital view window
 {
   if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)) {
-    // TO DO: new charge
-    // TO DO: maybe right mouse will give negative charge?
     test_charge.reset_charge(screen_to_space((double)x, (double)y));
   }
 }
@@ -84,16 +82,19 @@ void glut_key (unsigned char k, int x, int y)
   case '1':
     // Monopole
     initialise_charges(k-'0');
+    test_charge.reset_charge(test_charge.charge_position);
     break;
   
   case '2':
     // Dipole
     initialise_charges(k-'0');
+    test_charge.reset_charge(test_charge.charge_position);
     break;
   
   case '3':
     // Quadrupole
     initialise_charges(k-'0');
+    test_charge.reset_charge(test_charge.charge_position);
     break;
   }
 }
@@ -178,7 +179,6 @@ int main (int argc, char* argv[])
   glutKeyboardFunc(glut_key);
   
   initialise_charges(3);
-  cout << test_charge.charge_position << endl;
   glutMainLoop();
   
   return 0;

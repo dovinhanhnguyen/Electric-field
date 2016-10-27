@@ -20,19 +20,12 @@ using namespace std;
 #include "charge.h"
 
 #define SMALL_NUM 0.0000001
-#define SCALE 200.0 // (m)
+#define SCALE 100.0 // (m)
 #define PREFERRED_WIDTH 1024
 #define PREFERRED_HEIGHT 768
 #define MAX_NUM_SOURCE 4
 #define MAX_NUM_TEST 10
-#define N_TRACK 1000
-
-// Data type for recording test-charge's previous positions
-struct track_t {
-  unsigned short n;
-  unsigned short p;
-  vector2d pos[N_TRACK];
-};
+#define N_TRACK 100
 
 // Graphics variables
 int main_window;
