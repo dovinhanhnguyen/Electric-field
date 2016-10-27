@@ -8,6 +8,7 @@ Charge::Charge (int test_charge, int draw_charge, int sign_of_charge, vector2d i
   test_or_source = test_charge;
   draw_or_not = draw_charge;
   minus_or_plus = sign_of_charge;
+  switch_integrator = 0;
   if (test_or_source == 1) minus_or_plus = 0;
   charge_position = initial_position;
   previous_charge_position = initial_position;
@@ -28,7 +29,6 @@ void Charge::acceleration (void) {
   vector2d temp(0.0, 0.0);
   for (int i=0; i<MAX_NUM_SOURCE; i++) {
     temp += ((double)((ptr_source_list+i)->draw_or_not))*((ptr_source_list+i)->field_generated(charge_position));
-    //cout << "Field due to source charge " << i << " is " << ((double)((ptr_source_list+i)->draw_or_not))*((ptr_source_list+i)->field_generated(charge_position)) << endl;
   }
   charge_acceleration = ((CHARGE/MASS)*temp);
 }
@@ -36,17 +36,29 @@ void Charge::acceleration (void) {
 // Mechanical simulation
 void Charge::update_charge (void) {
   if (draw_or_not == 1) {
+    vector2d temp(0.0, 0.0);
+    
     acceleration();
-    previous_charge_position = charge_position;
-    charge_position = charge_position + charge_velocity*DELTA_T + (0.5*DELTA_T*DELTA_T)*charge_acceleration;
-    charge_velocity = charge_velocity + DELTA_T*charge_acceleration;
+    if (switch_integrator == 0) {
+      previous_charge_position = charge_position;
+      charge_position = charge_position + charge_velocity*DELTA_T + (0.5*DELTA_T*DELTA_T)*charge_acceleration;
+      charge_velocity = charge_velocity + DELTA_T*charge_acceleration;
+      switch_integrator = 1;
+    }
+    else {
+      temp = charge_position;
+      charge_position = charge_position*2.0 - previous_charge_position + (DELTA_T*DELTA_T)*charge_acceleration;
+      previous_charge_position = temp;
+      charge_velocity = (charge_position - previous_charge_position)/DELTA_T;
+    }
   }
 }
 
 // Reset test charge when there is a mouse click
 void Charge::reset_charge (vector2d initial_position) {
   test_or_source = 1;
-  draw_or_not = 1;
+  draw_or_not = 0;
+  switch_integrator = 0;
   charge_position = initial_position;
   previous_charge_position = initial_position;
   charge_velocity = vector2d(0.0, 0.0);
@@ -63,6 +75,7 @@ void Charge::detect_collision (double aspect_ratio) {
         temp = ((((ptr_source_list+i)->charge_position)-charge_position).abs());
         if (temp <= SCALE/50) {
           draw_or_not = 0;
+          reset_charge(vector2d(0.0, 0.0));
           break;
         }
       }
