@@ -26,12 +26,15 @@ void draw_window (void)
   
   // TO DO: put this in a class
   glPushMatrix();
-  glColor3f(0.0, 1.0, 1.0);
   glBegin(GL_POINTS);
   for (int i=0; i<MAX_NUM_SOURCE; i++) {
-    if (list_of_source_charges[i].draw_or_not == 1) glVertex3d(list_of_source_charges[i].charge_position.x, list_of_source_charges[i].charge_position.y, 0.0);
+    if (list_of_source_charges[i].draw_or_not == 1) {
+      if (list_of_source_charges[i].minus_or_plus == 0) glColor3f(0.0, 1.0, 1.0);
+      else glColor3f(1.0, 0.0, 0.0);
+      glVertex3d(list_of_source_charges[i].charge_position.x, list_of_source_charges[i].charge_position.y, 0.0);
+    }
   }
-  glColor3f(1.0, 0.0, 0.0);
+  glColor3f(1.0, 1.0, 0.0);
   if (test_charge.draw_or_not == 1) glVertex3d(test_charge.charge_position.x, test_charge.charge_position.y, 0.0);
   glEnd();
   glPopMatrix();
@@ -43,9 +46,10 @@ void update_charge_state (void)
   // The GLUT idle function, called every time round the event loop
 {
   // TO DO: Update charge states
-  test_charge.update_charge();
-  //~ cout << "Pos " << test_charge.charge_position << endl;
-  //~ cout << "Acc " << test_charge.charge_acceleration << endl;
+  if (test_charge.draw_or_not == 1) {
+    test_charge.update_charge();
+    test_charge.detect_collision();
+  }
 
   // Refresh the visualization
   draw_window();
@@ -103,7 +107,7 @@ void initialise_charges (int scenario)
   
   case 1:
     list_of_source_charges[0].draw_or_not = 1;
-    list_of_source_charges[0].minus_or_plus = 0;
+    list_of_source_charges[0].minus_or_plus = 1;
     list_of_source_charges[0].charge_position = vector2d(0.0, 0.0);
     
     list_of_source_charges[1].draw_or_not = 0;

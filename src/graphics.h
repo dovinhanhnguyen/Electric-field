@@ -20,7 +20,7 @@ using namespace std;
 #include "charge.h"
 
 #define SMALL_NUM 0.0000001
-#define SCALE 100.0 // (m)
+#define SCALE 200.0 // (m)
 #define PREFERRED_WIDTH 1024
 #define PREFERRED_HEIGHT 768
 #define MAX_NUM_SOURCE 4

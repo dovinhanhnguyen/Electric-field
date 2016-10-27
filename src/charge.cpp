@@ -27,17 +27,20 @@ vector2d Charge::field_generated (vector2d r) {
 void Charge::acceleration (void) {
   vector2d temp(0.0, 0.0);
   for (int i=0; i<MAX_NUM_SOURCE; i++) {
-    temp += ((ptr_source_list+i)->field_generated(charge_position));
+    temp += ((double)((ptr_source_list+i)->draw_or_not))*((ptr_source_list+i)->field_generated(charge_position));
+    //cout << "Field due to source charge " << i << " is " << ((double)((ptr_source_list+i)->draw_or_not))*((ptr_source_list+i)->field_generated(charge_position)) << endl;
   }
   charge_acceleration = ((CHARGE/MASS)*temp);
 }
 
 // Mechanical simulation
 void Charge::update_charge (void) {
-  acceleration();
-  previous_charge_position = charge_position;
-  charge_position = charge_position + charge_velocity*DELTA_T + (0.5*DELTA_T*DELTA_T)*charge_acceleration;
-  charge_velocity = charge_velocity + DELTA_T*charge_acceleration;
+  if (draw_or_not == 1) {
+    acceleration();
+    previous_charge_position = charge_position;
+    charge_position = charge_position + charge_velocity*DELTA_T + (0.5*DELTA_T*DELTA_T)*charge_acceleration;
+    charge_velocity = charge_velocity + DELTA_T*charge_acceleration;
+  }
 }
 
 // Reset test charge when there is a mouse click
@@ -48,4 +51,19 @@ void Charge::reset_charge (vector2d initial_position) {
   previous_charge_position = initial_position;
   charge_velocity = vector2d(0.0, 0.0);
   charge_acceleration = vector2d(0.0, 0.0);
+}
+
+// Detect when two opposite charges mesh together
+void Charge::detect_collision (void) {
+  double temp;
+  for (int i=0; i<MAX_NUM_SOURCE; i++) {
+    if ((ptr_source_list+i)->draw_or_not == 1) {
+      temp = ((((ptr_source_list+i)->charge_position)-charge_position).abs());
+      if (temp <= SCALE/50) {
+        draw_or_not = 0;
+        break;
+      }
+    }
+  }
+  if (draw_or_not == 0) cout << "Collision? " << draw_or_not << endl;
 }
